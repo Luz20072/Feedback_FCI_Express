@@ -1,12 +1,135 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>FCI Express – Feedback</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <h1>FCI Express – Feedback</h1>
+    <main class="container">
+
+        <section class="feedback-card">
+
+            <h1>FCI Express</h1>
+
+            <h2>Feedback</h2>
+
+            <p class="intro">
+                Du hast nicht an FCI Express teilgenommen?
+                Dann würden wir gerne wissen, warum.
+            </p>
+
+            <form id="feedbackForm">
+
+                <!-- Name -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Name
+                        <span class="optional">(optional)</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        maxlength="100"
+                        placeholder="Du kannst das Feedback anonym abgeben"
+                    >
+
+                </div>
+
+
+                <!-- Grund -->
+
+                <div class="form-group">
+
+                    <label for="reason">
+                        Warum hast du nicht teilgenommen?
+                    </label>
+
+                    <select
+                        id="reason"
+                        name="reason"
+                        required
+                    >
+
+                        <option value="" disabled selected>
+                            Bitte auswählen
+                        </option>
+
+                        <option value="Keine Zeit">
+                            Keine Zeit
+                        </option>
+
+                        <option value="Zu schwer">
+                            Zu schwer
+                        </option>
+
+                        <option value="Keine Lust">
+                            Keine Lust
+                        </option>
+
+                        <option value="Sonstige">
+                            Sonstige
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Sonstiger Grund -->
+
+                <div
+                    class="form-group hidden"
+                    id="additionalTextGroup"
+                >
+
+                    <label for="additionalText">
+                        Was war der Grund?
+                    </label>
+
+                    <textarea
+                        id="additionalText"
+                        name="additionalText"
+                        maxlength="2000"
+                        placeholder="Beschreibe deinen Grund..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- Absenden -->
+
+                <button
+                    type="submit"
+                    id="submitButton"
+                >
+                    Feedback absenden
+                </button>
+
+                <p
+                    id="statusMessage"
+                    class="status"
+                ></p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <script src="script.js"></script>
 
 </body>
+
 </html>
