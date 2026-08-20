@@ -80,43 +80,62 @@
 
     <script>
 
+        // ==========================================
+        // ZUGRIFFSKONTROLLE
+        // ==========================================
+
+        const feedbackSubmitted =
+            sessionStorage.getItem(
+                "feedbackSubmitted"
+            );
+
+
         /*
-        ==========================================
-        JSON-DATEI
-        ==========================================
-        */
+         * Wenn in diesem Browser-Tab noch kein
+         * erfolgreiches Feedback abgeschickt wurde,
+         * geht es zurück zur Hauptseite.
+         */
 
-        const JSON_DATEI = "../daten/fragen.json";
+        if (feedbackSubmitted !== "true") {
+
+            window.location.replace("../");
+
+        }
 
 
-        /*
-        ==========================================
-        HTML-ELEMENT
-        ==========================================
-        */
+        // ==========================================
+        // JSON-DATEI
+        // ==========================================
+
+        const JSON_DATEI =
+            "../fragen.json";
+
+
+        // ==========================================
+        // HTML-ELEMENT
+        // ==========================================
 
         const questions =
-            document.getElementById("questions");
+            document.getElementById(
+                "questions"
+            );
 
 
-        /*
-        ==========================================
-        FRAGEN LADEN
-        ==========================================
-        */
+        // ==========================================
+        // FRAGEN LADEN
+        // ==========================================
 
         async function loadQuestions() {
 
             try {
 
                 const response =
-                    await fetch(JSON_DATEI);
+                    await fetch(
+                        JSON_DATEI
+                    );
 
 
-                /*
-                Prüfen, ob die Datei
-                erfolgreich geladen wurde.
-                */
+                // JSON erfolgreich geladen?
 
                 if (!response.ok) {
 
@@ -127,18 +146,13 @@
                 }
 
 
-                /*
-                JSON auslesen
-                */
+                // JSON auslesen
 
                 const data =
                     await response.json();
 
 
-                /*
-                Prüfen, ob die JSON
-                tatsächlich ein Array enthält.
-                */
+                // Prüfen, ob Array
 
                 if (!Array.isArray(data)) {
 
@@ -149,27 +163,20 @@
                 }
 
 
-                /*
-                Ladehinweis entfernen
-                */
+                // Ladehinweis entfernen
 
                 questions.innerHTML = "";
 
 
-                /*
-                Jeden Eintrag aus der JSON
-                darstellen.
-
-                Es gibt bewusst KEINE
-                Nummerierung.
-                */
+                // ==================================
+                // FRAGEN DARSTELLEN
+                // ==================================
 
                 data.forEach((entry) => {
 
-
                     /*
-                    Frage-Container
-                    */
+                     * Container für einen Eintrag
+                     */
 
                     const article =
                         document.createElement(
@@ -181,8 +188,8 @@
 
 
                     /*
-                    Frage / Hinweis
-                    */
+                     * Frage
+                     */
 
                     const clue =
                         document.createElement(
@@ -197,8 +204,8 @@
 
 
                     /*
-                    Antwort-Container
-                    */
+                     * Antwort-Container
+                     */
 
                     const answer =
                         document.createElement(
@@ -210,8 +217,8 @@
 
 
                     /*
-                    "Antwort:"
-                    */
+                     * "Antwort:"
+                     */
 
                     const answerLabel =
                         document.createElement(
@@ -223,8 +230,8 @@
 
 
                     /*
-                    Tatsächliche Lösung
-                    */
+                     * Lösung
+                     */
 
                     const solution =
                         document.createElement(
@@ -236,8 +243,8 @@
 
 
                     /*
-                    Elemente zusammenbauen
-                    */
+                     * Antwort zusammenbauen
+                     */
 
                     answer.appendChild(
                         answerLabel
@@ -247,6 +254,10 @@
                         solution
                     );
 
+
+                    /*
+                     * Frage zusammenbauen
+                     */
 
                     article.appendChild(
                         clue
@@ -258,8 +269,8 @@
 
 
                     /*
-                    Frage zur Seite hinzufügen
-                    */
+                     * Zur Seite hinzufügen
+                     */
 
                     questions.appendChild(
                         article
@@ -268,10 +279,9 @@
                 });
 
 
-                /*
-                Falls keine Einträge
-                vorhanden sind.
-                */
+                // ==================================
+                // KEINE FRAGEN
+                // ==================================
 
                 if (data.length === 0) {
 
@@ -297,12 +307,10 @@
 
             } catch (error) {
 
-                console.error(error);
+                console.error(
+                    error
+                );
 
-
-                /*
-                Fehlermeldung anzeigen
-                */
 
                 questions.innerHTML = `
 
@@ -326,11 +334,9 @@
         }
 
 
-        /*
-        ==========================================
-        START
-        ==========================================
-        */
+        // ==========================================
+        // START
+        // ==========================================
 
         loadQuestions();
 

@@ -42,14 +42,15 @@ const successActions =
 // STARTZUSTAND
 // ==========================================
 
-// Die Seite geht beim Laden immer davon aus,
+// Beim Laden wird immer davon ausgegangen,
 // dass noch kein Feedback abgegeben wurde.
 
 if (successActions) {
 
     successActions.classList.add("hidden");
 
-    successActions.style.display = "none";
+    successActions.style.display =
+        "none";
 
 }
 
@@ -241,7 +242,17 @@ form.addEventListener("submit", async (event) => {
 
 
         // ==================================
-        // LÖSUNGEN & PDF FREISCHALTEN
+        // ZUGRIFF AUF LÖSUNGEN FREIGEBEN
+        // ==================================
+
+        sessionStorage.setItem(
+            "feedbackSubmitted",
+            "true"
+        );
+
+
+        // ==================================
+        // LÖSUNGEN & PDF ANZEIGEN
         // ==================================
 
         if (successActions) {
@@ -258,7 +269,9 @@ form.addEventListener("submit", async (event) => {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
 
         showStatus(
