@@ -87,9 +87,24 @@ const successActions =
 // STARTZUSTAND
 // ==========================================
 
+notParticipatedForm
+    .classList
+    .add("hidden");
+
+participatedForm
+    .classList
+    .add("hidden");
+
+additionalTextGroup
+    .classList
+    .add("hidden");
+
+
 if (successActions) {
 
-    successActions.classList.add("hidden");
+    successActions
+        .classList
+        .add("hidden");
 
     successActions.style.display =
         "none";
@@ -123,8 +138,6 @@ participationSelect.addEventListener(
                 .add("hidden");
 
 
-            // Pflichtfelder aktivieren
-
             overallRating.required = true;
             difficulty.required = true;
             lengthRating.required = true;
@@ -133,14 +146,9 @@ participationSelect.addEventListener(
             funRating.required = true;
 
 
-            // Felder des anderen Formulars
-            // nicht mehr erforderlich
-
             reasonSelect.required = false;
             additionalText.required = false;
 
-
-            // Alte Werte löschen
 
             reasonSelect.value = "";
 
@@ -171,12 +179,8 @@ participationSelect.addEventListener(
                 .add("hidden");
 
 
-            // Grund erforderlich
-
             reasonSelect.required = true;
 
-
-            // Teilnehmerfragen nicht erforderlich
 
             overallRating.required = false;
             difficulty.required = false;
@@ -186,14 +190,13 @@ participationSelect.addEventListener(
             funRating.required = false;
 
 
-            // Teilnehmerfelder zurücksetzen
-
             overallRating.value = "";
             difficulty.value = "";
             lengthRating.value = "";
             clueClarity.value = "";
             varietyRating.value = "";
             funRating.value = "";
+
 
             positiveFeedback.value = "";
             improvementFeedback.value = "";
@@ -253,10 +256,6 @@ form.addEventListener(
         event.preventDefault();
 
 
-        // ==================================
-        // GRUNDWERTE
-        // ==================================
-
         const participation =
             participationSelect.value;
 
@@ -296,8 +295,6 @@ form.addEventListener(
                 additionalText.value.trim();
 
 
-            // Grund prüfen
-
             if (!reason) {
 
                 showStatus(
@@ -309,8 +306,6 @@ form.addEventListener(
 
             }
 
-
-            // Sonstigen Grund prüfen
 
             if (
                 reason === "Sonstige" &&
@@ -327,15 +322,11 @@ form.addEventListener(
             }
 
 
-            // Button deaktivieren
-
             submitButton.disabled = true;
 
             submitButton.textContent =
                 "Wird gesendet...";
 
-
-            // Daten vorbereiten
 
             const feedback = {
 
@@ -403,10 +394,6 @@ form.addEventListener(
             "Teilgenommen"
         ) {
 
-            // ==================================
-            // PFLICHTFELDER PRÜFEN
-            // ==================================
-
             if (
                 !overallRating.value ||
                 !difficulty.value ||
@@ -426,19 +413,11 @@ form.addEventListener(
             }
 
 
-            // ==================================
-            // BUTTON DEAKTIVIEREN
-            // ==================================
-
             submitButton.disabled = true;
 
             submitButton.textContent =
                 "Wird gesendet...";
 
-
-            // ==================================
-            // DATEN VORBEREITEN
-            // ==================================
 
             const feedback = {
 
@@ -541,10 +520,6 @@ async function submitFeedback(
             );
 
 
-        // ==================================
-        // FEHLER PRÜFEN
-        // ==================================
-
         if (!response.ok) {
 
             const error =
@@ -569,11 +544,11 @@ async function submitFeedback(
         form.reset();
 
 
-        participatedForm
+        notParticipatedForm
             .classList
             .add("hidden");
 
-        notParticipatedForm
+        participatedForm
             .classList
             .add("hidden");
 
@@ -593,7 +568,7 @@ async function submitFeedback(
 
 
         // ==================================
-        // ZUGRIFF AUF LÖSUNGEN FREIGEBEN
+        // LÖSUNGEN FREIGEBEN
         // ==================================
 
         sessionStorage.setItem(
@@ -601,10 +576,6 @@ async function submitFeedback(
             "true"
         );
 
-
-        // ==================================
-        // LÖSUNGEN & PDF ANZEIGEN
-        // ==================================
 
         if (successActions) {
 
@@ -616,7 +587,6 @@ async function submitFeedback(
                 "flex";
 
         }
-
 
     }
 
@@ -633,7 +603,6 @@ async function submitFeedback(
         );
 
     }
-
 
     finally {
 
