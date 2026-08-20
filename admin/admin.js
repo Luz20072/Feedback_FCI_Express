@@ -376,31 +376,23 @@ refreshButton.addEventListener(
 // ALLE FEEDBACKS LÖSCHEN
 // ==========================================
 
-const deleteAllButton =
-    document.getElementById("deleteAllButton");
+const deleteAllButton = document.getElementById("deleteAllButton");
 
+if (deleteAllButton) {
 
-deleteAllButton.addEventListener(
-    "click",
-    async () => {
+    deleteAllButton.addEventListener("click", async function () {
 
-        const confirmed =
-            confirm(
-                "Möchtest du wirklich ALLE Feedbacks löschen?\n\n" +
-                "Diese Aktion kann nicht rückgängig gemacht werden."
-            );
-
+        const confirmed = confirm(
+            "Möchtest du wirklich ALLE Feedbacks löschen?\n\n" +
+            "Diese Aktion kann nicht rückgängig gemacht werden."
+        );
 
         if (!confirmed) {
             return;
         }
 
-
         deleteAllButton.disabled = true;
-
-        deleteAllButton.textContent =
-            "Lösche...";
-
+        deleteAllButton.textContent = "Lösche...";
 
         try {
 
@@ -410,33 +402,30 @@ deleteAllButton.addEventListener(
                     method: "DELETE",
 
                     headers: {
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            `Bearer ${accessToken}`
+                        "apikey": SUPABASE_KEY,
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Prefer": "return=minimal"
                     }
                 }
             );
 
-
             if (!response.ok) {
 
-                const error =
-                    await response.text();
+                const errorText = await response.text();
 
-                console.error(error);
+                console.error(
+                    "Fehler beim Löschen:",
+                    errorText
+                );
 
                 throw new Error(
                     "Feedbacks konnten nicht gelöscht werden."
                 );
             }
 
-
-            // Liste und Statistik neu laden
+            alert("Alle Feedbacks wurden gelöscht.");
 
             await loadFeedback();
-
 
         } catch (error) {
 
@@ -446,15 +435,13 @@ deleteAllButton.addEventListener(
                 "Fehler beim Löschen der Feedbacks."
             );
 
-
         } finally {
 
             deleteAllButton.disabled = false;
-
-            deleteAllButton.textContent =
-                "Alle löschen";
+            deleteAllButton.textContent = "Alle löschen";
 
         }
 
-    }
-);
+    });
+
+}
