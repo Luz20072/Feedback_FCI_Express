@@ -34,11 +34,24 @@ const submitButton =
 const statusMessage =
     document.getElementById("statusMessage");
 
-
-// Neue Elemente nach erfolgreichem Absenden
-
 const successActions =
     document.getElementById("successActions");
+
+
+// ==========================================
+// STARTZUSTAND
+// ==========================================
+
+// Die Seite geht beim Laden immer davon aus,
+// dass noch kein Feedback abgegeben wurde.
+
+if (successActions) {
+
+    successActions.classList.add("hidden");
+
+    successActions.style.display = "none";
+
+}
 
 
 // ==========================================
@@ -101,6 +114,7 @@ form.addEventListener("submit", async (event) => {
         );
 
         return;
+
     }
 
 
@@ -115,6 +129,7 @@ form.addEventListener("submit", async (event) => {
         );
 
         return;
+
     }
 
 
@@ -226,7 +241,7 @@ form.addEventListener("submit", async (event) => {
 
 
         // ==================================
-        // LÖSUNGEN & PDF ANZEIGEN
+        // LÖSUNGEN & PDF FREISCHALTEN
         // ==================================
 
         if (successActions) {
@@ -234,6 +249,9 @@ form.addEventListener("submit", async (event) => {
             successActions
                 .classList
                 .remove("hidden");
+
+            successActions.style.display =
+                "flex";
 
         }
 

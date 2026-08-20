@@ -212,7 +212,7 @@ button:disabled {
 }
 
 .success-actions.hidden {
-    display: none;
+    display: none !important;
 }
 
 
