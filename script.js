@@ -16,8 +16,17 @@ const SUPABASE_KEY =
 const form =
     document.getElementById("feedbackForm");
 
+const participationSelect =
+    document.getElementById("participation");
+
 const nameInput =
     document.getElementById("name");
+
+
+// Nicht teilgenommen
+
+const notParticipatedForm =
+    document.getElementById("notParticipatedForm");
 
 const reasonSelect =
     document.getElementById("reason");
@@ -27,6 +36,42 @@ const additionalTextGroup =
 
 const additionalText =
     document.getElementById("additionalText");
+
+
+// Teilgenommen
+
+const participatedForm =
+    document.getElementById("participatedForm");
+
+const overallRating =
+    document.getElementById("overall_rating");
+
+const difficulty =
+    document.getElementById("difficulty");
+
+const lengthRating =
+    document.getElementById("length_rating");
+
+const clueClarity =
+    document.getElementById("clue_clarity");
+
+const varietyRating =
+    document.getElementById("variety_rating");
+
+const funRating =
+    document.getElementById("fun_rating");
+
+const positiveFeedback =
+    document.getElementById("positive_feedback");
+
+const improvementFeedback =
+    document.getElementById("improvement_feedback");
+
+const additionalFeedback =
+    document.getElementById("additional_feedback");
+
+
+// Allgemein
 
 const submitButton =
     document.getElementById("submitButton");
@@ -42,9 +87,6 @@ const successActions =
 // STARTZUSTAND
 // ==========================================
 
-// Beim Laden wird immer davon ausgegangen,
-// dass noch kein Feedback abgegeben wurde.
-
 if (successActions) {
 
     successActions.classList.add("hidden");
@@ -56,148 +98,447 @@ if (successActions) {
 
 
 // ==========================================
+// TEILNAHME AUSWÄHLEN
+// ==========================================
+
+participationSelect.addEventListener(
+    "change",
+    () => {
+
+        // ==================================
+        // TEILGENOMMEN
+        // ==================================
+
+        if (
+            participationSelect.value ===
+            "Teilgenommen"
+        ) {
+
+            participatedForm
+                .classList
+                .remove("hidden");
+
+            notParticipatedForm
+                .classList
+                .add("hidden");
+
+
+            // Pflichtfelder aktivieren
+
+            overallRating.required = true;
+            difficulty.required = true;
+            lengthRating.required = true;
+            clueClarity.required = true;
+            varietyRating.required = true;
+            funRating.required = true;
+
+
+            // Felder des anderen Formulars
+            // nicht mehr erforderlich
+
+            reasonSelect.required = false;
+            additionalText.required = false;
+
+
+            // Alte Werte löschen
+
+            reasonSelect.value = "";
+
+            additionalText.value = "";
+
+            additionalTextGroup
+                .classList
+                .add("hidden");
+
+        }
+
+
+        // ==================================
+        // NICHT TEILGENOMMEN
+        // ==================================
+
+        else if (
+            participationSelect.value ===
+            "Nicht teilgenommen"
+        ) {
+
+            notParticipatedForm
+                .classList
+                .remove("hidden");
+
+            participatedForm
+                .classList
+                .add("hidden");
+
+
+            // Grund erforderlich
+
+            reasonSelect.required = true;
+
+
+            // Teilnehmerfragen nicht erforderlich
+
+            overallRating.required = false;
+            difficulty.required = false;
+            lengthRating.required = false;
+            clueClarity.required = false;
+            varietyRating.required = false;
+            funRating.required = false;
+
+
+            // Teilnehmerfelder zurücksetzen
+
+            overallRating.value = "";
+            difficulty.value = "";
+            lengthRating.value = "";
+            clueClarity.value = "";
+            varietyRating.value = "";
+            funRating.value = "";
+
+            positiveFeedback.value = "";
+            improvementFeedback.value = "";
+            additionalFeedback.value = "";
+
+        }
+
+    }
+);
+
+
+// ==========================================
 // SONSTIGE EIN-/AUSBLENDEN
 // ==========================================
 
-reasonSelect.addEventListener("change", () => {
+reasonSelect.addEventListener(
+    "change",
+    () => {
 
-    if (reasonSelect.value === "Sonstige") {
+        if (
+            reasonSelect.value ===
+            "Sonstige"
+        ) {
 
-        additionalTextGroup
-            .classList
-            .remove("hidden");
+            additionalTextGroup
+                .classList
+                .remove("hidden");
 
-        additionalText.required = true;
+            additionalText.required = true;
 
-    } else {
+        }
 
-        additionalTextGroup
-            .classList
-            .add("hidden");
+        else {
 
-        additionalText.required = false;
+            additionalTextGroup
+                .classList
+                .add("hidden");
 
-        additionalText.value = "";
+            additionalText.required = false;
+
+            additionalText.value = "";
+
+        }
 
     }
-
-});
+);
 
 
 // ==========================================
 // FEEDBACK ABSENDEN
 // ==========================================
 
-form.addEventListener("submit", async (event) => {
+form.addEventListener(
+    "submit",
+    async (event) => {
 
-    event.preventDefault();
-
-
-    const name =
-        nameInput.value.trim();
-
-    const reason =
-        reasonSelect.value;
-
-    const text =
-        additionalText.value.trim();
+        event.preventDefault();
 
 
-    // ======================================
-    // SICHERHEITSPRÜFUNG
-    // ======================================
+        // ==================================
+        // GRUNDWERTE
+        // ==================================
 
-    if (!reason) {
+        const participation =
+            participationSelect.value;
 
-        showStatus(
-            "Bitte wähle einen Grund aus.",
-            "error"
-        );
+        const name =
+            nameInput.value.trim();
 
-        return;
+
+        // ==================================
+        // TEILNAHME PRÜFEN
+        // ==================================
+
+        if (!participation) {
+
+            showStatus(
+                "Bitte wähle zuerst aus, ob du teilgenommen hast.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        // ==================================
+        // NICHT TEILGENOMMEN
+        // ==================================
+
+        if (
+            participation ===
+            "Nicht teilgenommen"
+        ) {
+
+            const reason =
+                reasonSelect.value;
+
+            const text =
+                additionalText.value.trim();
+
+
+            // Grund prüfen
+
+            if (!reason) {
+
+                showStatus(
+                    "Bitte wähle einen Grund aus.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            // Sonstigen Grund prüfen
+
+            if (
+                reason === "Sonstige" &&
+                !text
+            ) {
+
+                showStatus(
+                    "Bitte beschreibe den sonstigen Grund.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            // Button deaktivieren
+
+            submitButton.disabled = true;
+
+            submitButton.textContent =
+                "Wird gesendet...";
+
+
+            // Daten vorbereiten
+
+            const feedback = {
+
+                name:
+                    name === ""
+                        ? null
+                        : name,
+
+                participation:
+                    "Nicht teilgenommen",
+
+                reason:
+                    reason,
+
+                additional_text:
+                    reason === "Sonstige"
+                        ? text
+                        : null,
+
+                overall_rating:
+                    null,
+
+                difficulty:
+                    null,
+
+                length_rating:
+                    null,
+
+                clue_clarity:
+                    null,
+
+                variety_rating:
+                    null,
+
+                fun_rating:
+                    null,
+
+                positive_feedback:
+                    null,
+
+                improvement_feedback:
+                    null,
+
+                additional_feedback:
+                    null
+
+            };
+
+
+            await submitFeedback(
+                feedback
+            );
+
+            return;
+
+        }
+
+
+        // ==================================
+        // TEILGENOMMEN
+        // ==================================
+
+        if (
+            participation ===
+            "Teilgenommen"
+        ) {
+
+            // ==================================
+            // PFLICHTFELDER PRÜFEN
+            // ==================================
+
+            if (
+                !overallRating.value ||
+                !difficulty.value ||
+                !lengthRating.value ||
+                !clueClarity.value ||
+                !varietyRating.value ||
+                !funRating.value
+            ) {
+
+                showStatus(
+                    "Bitte beantworte alle Pflichtfragen.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            // ==================================
+            // BUTTON DEAKTIVIEREN
+            // ==================================
+
+            submitButton.disabled = true;
+
+            submitButton.textContent =
+                "Wird gesendet...";
+
+
+            // ==================================
+            // DATEN VORBEREITEN
+            // ==================================
+
+            const feedback = {
+
+                name:
+                    name === ""
+                        ? null
+                        : name,
+
+                participation:
+                    "Teilgenommen",
+
+                reason:
+                    null,
+
+                additional_text:
+                    null,
+
+                overall_rating:
+                    overallRating.value,
+
+                difficulty:
+                    difficulty.value,
+
+                length_rating:
+                    lengthRating.value,
+
+                clue_clarity:
+                    clueClarity.value,
+
+                variety_rating:
+                    varietyRating.value,
+
+                fun_rating:
+                    funRating.value,
+
+                positive_feedback:
+                    positiveFeedback.value.trim() ||
+                    null,
+
+                improvement_feedback:
+                    improvementFeedback.value.trim() ||
+                    null,
+
+                additional_feedback:
+                    additionalFeedback.value.trim() ||
+                    null
+
+            };
+
+
+            await submitFeedback(
+                feedback
+            );
+
+        }
 
     }
+);
 
 
-    if (
-        reason === "Sonstige" &&
-        !text
-    ) {
+// ==========================================
+// SUPABASE FEEDBACK SENDEN
+// ==========================================
 
-        showStatus(
-            "Bitte beschreibe den sonstigen Grund.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    // ======================================
-    // BUTTON DEAKTIVIEREN
-    // ======================================
-
-    submitButton.disabled = true;
-
-    submitButton.textContent =
-        "Wird gesendet...";
-
-
-    // ======================================
-    // DATEN VORBEREITEN
-    // ======================================
-
-    const feedback = {
-
-        name:
-            name === ""
-                ? null
-                : name,
-
-        reason:
-            reason,
-
-        additional_text:
-            reason === "Sonstige"
-                ? text
-                : null
-
-    };
-
+async function submitFeedback(
+    feedback
+) {
 
     try {
 
-        // ==================================
-        // SUPABASE
-        // ==================================
+        const response =
+            await fetch(
+                `${SUPABASE_URL}/rest/v1/feedback`,
+                {
 
-        const response = await fetch(
-            `${SUPABASE_URL}/rest/v1/feedback`,
-            {
-                method: "POST",
+                    method: "POST",
 
-                headers: {
+                    headers: {
 
-                    "Content-Type":
-                        "application/json",
+                        "Content-Type":
+                            "application/json",
 
-                    "apikey":
-                        SUPABASE_KEY,
+                        "apikey":
+                            SUPABASE_KEY,
 
-                    "Authorization":
-                        `Bearer ${SUPABASE_KEY}`,
+                        "Authorization":
+                            `Bearer ${SUPABASE_KEY}`,
 
-                    "Prefer":
-                        "return=minimal"
+                        "Prefer":
+                            "return=minimal"
 
-                },
+                    },
 
-                body:
-                    JSON.stringify(feedback)
+                    body:
+                        JSON.stringify(
+                            feedback
+                        )
 
-            }
-        );
+                }
+            );
 
 
         // ==================================
@@ -228,11 +569,21 @@ form.addEventListener("submit", async (event) => {
         form.reset();
 
 
+        participatedForm
+            .classList
+            .add("hidden");
+
+        notParticipatedForm
+            .classList
+            .add("hidden");
+
         additionalTextGroup
             .classList
             .add("hidden");
 
-        additionalText.required = false;
+
+        additionalText.required =
+            false;
 
 
         showStatus(
@@ -267,7 +618,9 @@ form.addEventListener("submit", async (event) => {
         }
 
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             error
@@ -279,8 +632,10 @@ form.addEventListener("submit", async (event) => {
             "error"
         );
 
+    }
 
-    } finally {
+
+    finally {
 
         submitButton.disabled = false;
 
@@ -289,14 +644,17 @@ form.addEventListener("submit", async (event) => {
 
     }
 
-});
+}
 
 
 // ==========================================
 // STATUSMELDUNG
 // ==========================================
 
-function showStatus(message, type) {
+function showStatus(
+    message,
+    type
+) {
 
     statusMessage.textContent =
         message;
