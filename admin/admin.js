@@ -371,3 +371,90 @@ refreshButton.addEventListener(
     "click",
     loadFeedback
 );
+
+// ==========================================
+// ALLE FEEDBACKS LÖSCHEN
+// ==========================================
+
+const deleteAllButton =
+    document.getElementById("deleteAllButton");
+
+
+deleteAllButton.addEventListener(
+    "click",
+    async () => {
+
+        const confirmed =
+            confirm(
+                "Möchtest du wirklich ALLE Feedbacks löschen?\n\n" +
+                "Diese Aktion kann nicht rückgängig gemacht werden."
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        deleteAllButton.disabled = true;
+
+        deleteAllButton.textContent =
+            "Lösche...";
+
+
+        try {
+
+            const response = await fetch(
+                `${SUPABASE_URL}/rest/v1/feedback?id=not.is.null`,
+                {
+                    method: "DELETE",
+
+                    headers: {
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            `Bearer ${accessToken}`
+                    }
+                }
+            );
+
+
+            if (!response.ok) {
+
+                const error =
+                    await response.text();
+
+                console.error(error);
+
+                throw new Error(
+                    "Feedbacks konnten nicht gelöscht werden."
+                );
+            }
+
+
+            // Liste und Statistik neu laden
+
+            await loadFeedback();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Fehler beim Löschen der Feedbacks."
+            );
+
+
+        } finally {
+
+            deleteAllButton.disabled = false;
+
+            deleteAllButton.textContent =
+                "Alle löschen";
+
+        }
+
+    }
+);

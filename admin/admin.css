@@ -288,3 +288,32 @@ button:hover {
     }
 
 }
+
+.feedback-actions {
+    display: flex;
+    gap: 10px;
+}
+
+
+.delete-all {
+    background: #8b0000;
+}
+
+
+.delete-all:hover {
+    background: #a00000;
+}
+
+
+@media (max-width: 600px) {
+
+    .feedback-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .feedback-actions button {
+        width: 100%;
+    }
+
+}
