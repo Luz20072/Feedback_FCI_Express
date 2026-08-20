@@ -211,7 +211,7 @@ button:disabled {
 
 }
 
-.hidden {
+.success-actions.hidden {
     display: none;
 }
 
