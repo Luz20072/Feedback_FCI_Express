@@ -2,13 +2,25 @@
 <html lang="de">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>FCI Express – Feedback</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <title>
+        FCI Express – Feedback
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
@@ -16,25 +28,40 @@
 
         <section class="feedback-card">
 
-            <h1>FCI Express</h1>
+            <h1>
+                FCI Express
+            </h1>
 
-            <h2>Feedback</h2>
+            <h2>
+                Feedback
+            </h2>
+
 
             <p class="intro">
                 Du hast nicht an FCI Express teilgenommen?
                 Dann würden wir gerne wissen, warum.
             </p>
 
+
             <form id="feedbackForm">
 
-                <!-- Name -->
+
+                <!-- ============================= -->
+                <!-- NAME -->
+                <!-- ============================= -->
 
                 <div class="form-group">
 
                     <label for="name">
+
                         Name
-                        <span class="optional">(optional)</span>
+
+                        <span class="optional">
+                            (optional)
+                        </span>
+
                     </label>
+
 
                     <input
                         type="text"
@@ -47,7 +74,9 @@
                 </div>
 
 
-                <!-- Grund -->
+                <!-- ============================= -->
+                <!-- GRUND -->
+                <!-- ============================= -->
 
                 <div class="form-group">
 
@@ -55,27 +84,36 @@
                         Warum hast du nicht teilgenommen?
                     </label>
 
+
                     <select
                         id="reason"
                         name="reason"
                         required
                     >
 
-                        <option value="" disabled selected>
+                        <option
+                            value=""
+                            disabled
+                            selected
+                        >
                             Bitte auswählen
                         </option>
+
 
                         <option value="Keine Zeit">
                             Ich hatte keine Zeit
                         </option>
 
+
                         <option value="Zu schwer">
                             Es war zu schwer
                         </option>
 
+
                         <option value="Keine Lust">
                             Ich hatte keine Lust
                         </option>
+
 
                         <option value="Sonstige">
                             Sonstige
@@ -86,7 +124,9 @@
                 </div>
 
 
-                <!-- Sonstiger Grund -->
+                <!-- ============================= -->
+                <!-- SONSTIGER GRUND -->
+                <!-- ============================= -->
 
                 <div
                     class="form-group hidden"
@@ -96,6 +136,7 @@
                     <label for="additionalText">
                         Was war der Grund?
                     </label>
+
 
                     <textarea
                         id="additionalText"
@@ -107,7 +148,9 @@
                 </div>
 
 
-                <!-- Absenden -->
+                <!-- ============================= -->
+                <!-- ABSENDEN -->
+                <!-- ============================= -->
 
                 <button
                     type="submit"
@@ -116,10 +159,44 @@
                     Feedback absenden
                 </button>
 
+
+                <!-- ============================= -->
+                <!-- STATUS -->
+                <!-- ============================= -->
+
                 <p
                     id="statusMessage"
                     class="status"
                 ></p>
+
+
+                <!-- ============================= -->
+                <!-- NACH ERFOLGREICHEM ABSENDEN -->
+                <!-- ============================= -->
+
+                <div
+                    id="successActions"
+                    class="success-actions hidden"
+                >
+
+                    <a
+                        href="loesungen/"
+                        class="success-button"
+                    >
+                        Fragen &amp; Lösungen ansehen
+                    </a>
+
+
+                    <a
+                        href="kreuzwortraetsel-loesung.pdf"
+                        class="success-button secondary"
+                        download
+                    >
+                        PDF herunterladen
+                    </a>
+
+                </div>
+
 
             </form>
 

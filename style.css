@@ -210,3 +210,74 @@ button:disabled {
     }
 
 }
+
+.hidden {
+    display: none;
+}
+
+
+.success-actions {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    margin-top: 25px;
+
+    flex-wrap: wrap;
+}
+
+
+.success-button {
+    display: inline-block;
+
+    padding: 14px 22px;
+
+    border-radius: 9px;
+
+    background: #222;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    transition:
+        background 0.15s,
+        transform 0.15s;
+}
+
+
+.success-button:hover {
+    background: #444;
+
+    transform: translateY(-1px);
+}
+
+
+.success-button.secondary {
+    background: #777;
+}
+
+
+.success-button.secondary:hover {
+    background: #555;
+}
+
+
+@media (max-width: 600px) {
+
+    .success-actions {
+        flex-direction: column;
+    }
+
+
+    .success-button {
+        width: 100%;
+
+        text-align: center;
+    }
+
+}

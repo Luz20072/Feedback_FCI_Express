@@ -35,6 +35,12 @@ const statusMessage =
     document.getElementById("statusMessage");
 
 
+// Neue Elemente nach erfolgreichem Absenden
+
+const successActions =
+    document.getElementById("successActions");
+
+
 // ==========================================
 // SONSTIGE EIN-/AUSBLENDEN
 // ==========================================
@@ -43,17 +49,22 @@ reasonSelect.addEventListener("change", () => {
 
     if (reasonSelect.value === "Sonstige") {
 
-        additionalTextGroup.classList.remove("hidden");
+        additionalTextGroup
+            .classList
+            .remove("hidden");
 
         additionalText.required = true;
 
     } else {
 
-        additionalTextGroup.classList.add("hidden");
+        additionalTextGroup
+            .classList
+            .add("hidden");
 
         additionalText.required = false;
 
         additionalText.value = "";
+
     }
 
 });
@@ -78,7 +89,9 @@ form.addEventListener("submit", async (event) => {
         additionalText.value.trim();
 
 
-    // Sicherheitsprüfung
+    // ======================================
+    // SICHERHEITSPRÜFUNG
+    // ======================================
 
     if (!reason) {
 
@@ -105,7 +118,9 @@ form.addEventListener("submit", async (event) => {
     }
 
 
-    // Button deaktivieren
+    // ======================================
+    // BUTTON DEAKTIVIEREN
+    // ======================================
 
     submitButton.disabled = true;
 
@@ -113,7 +128,9 @@ form.addEventListener("submit", async (event) => {
         "Wird gesendet...";
 
 
-    // Daten vorbereiten
+    // ======================================
+    // DATEN VORBEREITEN
+    // ======================================
 
     const feedback = {
 
@@ -129,10 +146,15 @@ form.addEventListener("submit", async (event) => {
             reason === "Sonstige"
                 ? text
                 : null
+
     };
 
 
     try {
+
+        // ==================================
+        // SUPABASE
+        // ==================================
 
         const response = await fetch(
             `${SUPABASE_URL}/rest/v1/feedback`,
@@ -140,6 +162,7 @@ form.addEventListener("submit", async (event) => {
                 method: "POST",
 
                 headers: {
+
                     "Content-Type":
                         "application/json",
 
@@ -151,13 +174,19 @@ form.addEventListener("submit", async (event) => {
 
                     "Prefer":
                         "return=minimal"
+
                 },
 
                 body:
                     JSON.stringify(feedback)
+
             }
         );
 
+
+        // ==================================
+        // FEHLER PRÜFEN
+        // ==================================
 
         if (!response.ok) {
 
@@ -172,12 +201,16 @@ form.addEventListener("submit", async (event) => {
             throw new Error(
                 "Feedback konnte nicht gespeichert werden."
             );
+
         }
 
 
-        // Erfolgreich
+        // ==================================
+        // ERFOLGREICH
+        // ==================================
 
         form.reset();
+
 
         additionalTextGroup
             .classList
@@ -192,14 +225,29 @@ form.addEventListener("submit", async (event) => {
         );
 
 
+        // ==================================
+        // LÖSUNGEN & PDF ANZEIGEN
+        // ==================================
+
+        if (successActions) {
+
+            successActions
+                .classList
+                .remove("hidden");
+
+        }
+
+
     } catch (error) {
 
         console.error(error);
+
 
         showStatus(
             "Das Feedback konnte nicht gesendet werden.",
             "error"
         );
+
 
     } finally {
 
@@ -207,6 +255,7 @@ form.addEventListener("submit", async (event) => {
 
         submitButton.textContent =
             "Feedback absenden";
+
     }
 
 });
@@ -223,4 +272,5 @@ function showStatus(message, type) {
 
     statusMessage.className =
         `status ${type}`;
+
 }

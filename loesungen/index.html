@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        FCI Express – Kreuzworträtsel
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main class="container">
+
+        <header class="header">
+
+            <h1>
+                FCI Express
+            </h1>
+
+            <h2>
+                Kreuzworträtsel
+            </h2>
+
+            <p>
+                Fragen und Lösungen
+            </p>
+
+        </header>
+
+
+        <section
+            id="questions"
+            class="questions"
+        >
+
+            <p class="loading">
+                Fragen und Lösungen werden geladen...
+            </p>
+
+        </section>
+
+
+        <section class="actions">
+
+            <a
+                href="../"
+                class="button secondary"
+            >
+                Zurück zum Feedback
+            </a>
+
+
+            <a
+                href="../kreuzwortraetsel-loesung.pdf"
+                class="button"
+                download
+            >
+                PDF herunterladen
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        /*
+        ==========================================
+        JSON-DATEI
+        ==========================================
+        */
+
+        const JSON_DATEI = "../daten/fragen.json";
+
+
+        /*
+        ==========================================
+        HTML-ELEMENT
+        ==========================================
+        */
+
+        const questions =
+            document.getElementById("questions");
+
+
+        /*
+        ==========================================
+        FRAGEN LADEN
+        ==========================================
+        */
+
+        async function loadQuestions() {
+
+            try {
+
+                const response =
+                    await fetch(JSON_DATEI);
+
+
+                /*
+                Prüfen, ob die Datei
+                erfolgreich geladen wurde.
+                */
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "JSON konnte nicht geladen werden."
+                    );
+
+                }
+
+
+                /*
+                JSON auslesen
+                */
+
+                const data =
+                    await response.json();
+
+
+                /*
+                Prüfen, ob die JSON
+                tatsächlich ein Array enthält.
+                */
+
+                if (!Array.isArray(data)) {
+
+                    throw new Error(
+                        "Die JSON muss ein Array enthalten."
+                    );
+
+                }
+
+
+                /*
+                Ladehinweis entfernen
+                */
+
+                questions.innerHTML = "";
+
+
+                /*
+                Jeden Eintrag aus der JSON
+                darstellen.
+
+                Es gibt bewusst KEINE
+                Nummerierung.
+                */
+
+                data.forEach((entry) => {
+
+
+                    /*
+                    Frage-Container
+                    */
+
+                    const article =
+                        document.createElement(
+                            "article"
+                        );
+
+                    article.className =
+                        "question";
+
+
+                    /*
+                    Frage / Hinweis
+                    */
+
+                    const clue =
+                        document.createElement(
+                            "p"
+                        );
+
+                    clue.className =
+                        "clue";
+
+                    clue.textContent =
+                        entry.clue;
+
+
+                    /*
+                    Antwort-Container
+                    */
+
+                    const answer =
+                        document.createElement(
+                            "div"
+                        );
+
+                    answer.className =
+                        "answer";
+
+
+                    /*
+                    "Antwort:"
+                    */
+
+                    const answerLabel =
+                        document.createElement(
+                            "span"
+                        );
+
+                    answerLabel.textContent =
+                        "Antwort:";
+
+
+                    /*
+                    Tatsächliche Lösung
+                    */
+
+                    const solution =
+                        document.createElement(
+                            "strong"
+                        );
+
+                    solution.textContent =
+                        entry.solution;
+
+
+                    /*
+                    Elemente zusammenbauen
+                    */
+
+                    answer.appendChild(
+                        answerLabel
+                    );
+
+                    answer.appendChild(
+                        solution
+                    );
+
+
+                    article.appendChild(
+                        clue
+                    );
+
+                    article.appendChild(
+                        answer
+                    );
+
+
+                    /*
+                    Frage zur Seite hinzufügen
+                    */
+
+                    questions.appendChild(
+                        article
+                    );
+
+                });
+
+
+                /*
+                Falls keine Einträge
+                vorhanden sind.
+                */
+
+                if (data.length === 0) {
+
+                    questions.innerHTML = `
+
+                        <div class="error">
+
+                            <h3>
+                                Keine Fragen gefunden
+                            </h3>
+
+                            <p>
+                                Die JSON-Datei enthält
+                                keine Fragen.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                /*
+                Fehlermeldung anzeigen
+                */
+
+                questions.innerHTML = `
+
+                    <div class="error">
+
+                        <h3>
+                            Fehler beim Laden
+                        </h3>
+
+                        <p>
+                            Die Fragen und Lösungen
+                            konnten nicht geladen werden.
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        /*
+        ==========================================
+        START
+        ==========================================
+        */
+
+        loadQuestions();
+
+    </script>
+
+
+</body>
+
+</html>
