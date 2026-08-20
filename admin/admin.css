@@ -23,6 +23,7 @@ body {
 
 .container {
     width: 100%;
+
     max-width: 1000px;
 
     margin: 0 auto;
@@ -109,6 +110,13 @@ button:hover {
 }
 
 
+button:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+
 .header {
     display: flex;
 
@@ -134,6 +142,10 @@ button:hover {
     background: #a00000;
 }
 
+
+/* ==========================================
+   STATISTIK
+   ========================================== */
 
 .statistics {
     display: grid;
@@ -179,6 +191,10 @@ button:hover {
 }
 
 
+/* ==========================================
+   FEEDBACK-HEADER
+   ========================================== */
+
 .feedback-header {
     display: flex;
 
@@ -190,12 +206,35 @@ button:hover {
 }
 
 
+.feedback-actions {
+    display: flex;
+
+    gap: 10px;
+}
+
+
 .refresh {
     background: #555;
 }
 
 
+.delete-all {
+    background: #8b0000;
+}
+
+
+.delete-all:hover {
+    background: #a00000;
+}
+
+
+/* ==========================================
+   FEEDBACK
+   ========================================== */
+
 .feedback {
+    background: white;
+
     border: 1px solid #ddd;
 
     border-radius: 8px;
@@ -234,6 +273,45 @@ button:hover {
 }
 
 
+/* ==========================================
+   TEILNAHMETYP
+   ========================================== */
+
+.feedback-type {
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    border-radius: 6px;
+
+    background: #eee;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    margin-bottom: 15px;
+}
+
+
+.feedback-type.participated {
+    background: #e5f3e8;
+
+    color: #246b35;
+}
+
+
+.feedback-type.not-participated {
+    background: #f5e8e8;
+
+    color: #8b0000;
+}
+
+
+/* ==========================================
+   NICHTTEILNEHMER
+   ========================================== */
+
 .feedback-reason {
     font-weight: bold;
 
@@ -241,14 +319,72 @@ button:hover {
 }
 
 
+/* ==========================================
+   TEILNEHMER-ANTWORTEN
+   ========================================== */
+
+.participant-answers {
+    margin-bottom: 15px;
+}
+
+
+.answer {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 9px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+
+.answer:last-child {
+    border-bottom: none;
+}
+
+
+.answer strong {
+    flex: 1;
+}
+
+
+.answer span {
+    text-align: right;
+
+    color: #555;
+}
+
+
+/* ==========================================
+   FREITEXT
+   ========================================== */
+
 .feedback-text {
     color: #555;
 
     line-height: 1.5;
 
     white-space: pre-wrap;
+
+    margin-top: 15px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #eee;
 }
 
+
+.feedback-text strong {
+    color: #222;
+}
+
+
+/* ==========================================
+   ALLGEMEIN
+   ========================================== */
 
 .hidden {
     display: none;
@@ -263,15 +399,21 @@ button:hover {
 }
 
 
+/* ==========================================
+   MOBILE
+   ========================================== */
+
 @media (max-width: 600px) {
 
     body {
         padding: 15px;
     }
 
+
     .card {
         padding: 20px;
     }
+
 
     .header {
         align-items: flex-start;
@@ -281,39 +423,44 @@ button:hover {
         flex-direction: column;
     }
 
+
+    .feedback-header {
+        align-items: flex-start;
+
+        gap: 15px;
+
+        flex-direction: column;
+    }
+
+
+    .feedback-actions {
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+
+    .feedback-actions button {
+        width: 100%;
+    }
+
+
     .feedback-top {
         flex-direction: column;
 
         gap: 5px;
     }
 
-}
 
-.feedback-actions {
-    display: flex;
-    gap: 10px;
-}
-
-
-.delete-all {
-    background: #8b0000;
-}
-
-
-.delete-all:hover {
-    background: #a00000;
-}
-
-
-@media (max-width: 600px) {
-
-    .feedback-actions {
-        width: 100%;
+    .answer {
         flex-direction: column;
+
+        gap: 4px;
     }
 
-    .feedback-actions button {
-        width: 100%;
+
+    .answer span {
+        text-align: left;
     }
 
 }

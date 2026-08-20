@@ -65,25 +65,26 @@ loginForm.addEventListener(
 
         try {
 
-            const response = await fetch(
-                `${SUPABASE_URL}/auth/v1/token?grant_type=password`,
-                {
-                    method: "POST",
+            const response =
+                await fetch(
+                    `${SUPABASE_URL}/auth/v1/token?grant_type=password`,
+                    {
+                        method: "POST",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json",
+                        headers: {
+                            "Content-Type":
+                                "application/json",
 
-                        "apikey":
-                            SUPABASE_KEY
-                    },
+                            "apikey":
+                                SUPABASE_KEY
+                        },
 
-                    body: JSON.stringify({
-                        email: email,
-                        password: password
-                    })
-                }
-            );
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
+                    }
+                );
 
 
             const data =
@@ -97,6 +98,7 @@ loginForm.addEventListener(
                     data.msg ||
                     "Anmeldung fehlgeschlagen."
                 );
+
             }
 
 
@@ -144,20 +146,21 @@ async function loadFeedback() {
 
     try {
 
-        const response = await fetch(
-            `${SUPABASE_URL}/rest/v1/feedback?select=*&order=created_at.desc`,
-            {
-                method: "GET",
+        const response =
+            await fetch(
+                `${SUPABASE_URL}/rest/v1/feedback?select=*&order=created_at.desc`,
+                {
+                    method: "GET",
 
-                headers: {
-                    "apikey":
-                        SUPABASE_KEY,
+                    headers: {
+                        "apikey":
+                            SUPABASE_KEY,
 
-                    "Authorization":
-                        `Bearer ${accessToken}`
+                        "Authorization":
+                            `Bearer ${accessToken}`
+                    }
                 }
-            }
-        );
+            );
 
 
         if (!response.ok) {
@@ -170,6 +173,7 @@ async function loadFeedback() {
             throw new Error(
                 "Feedbacks konnten nicht geladen werden."
             );
+
         }
 
 
@@ -177,9 +181,13 @@ async function loadFeedback() {
             await response.json();
 
 
-        displayStatistics(feedbacks);
+        displayStatistics(
+            feedbacks
+        );
 
-        displayFeedbacks(feedbacks);
+        displayFeedbacks(
+            feedbacks
+        );
 
 
     } catch (error) {
@@ -187,7 +195,7 @@ async function loadFeedback() {
         console.error(error);
 
         feedbackList.innerHTML =
-            `<p id="error">${error.message}</p>`;
+            `<p id="error">${escapeHtml(error.message)}</p>`;
 
     }
 
@@ -198,42 +206,82 @@ async function loadFeedback() {
 // STATISTIK
 // ==========================================
 
-function displayStatistics(feedbacks) {
+function displayStatistics(
+    feedbacks
+) {
 
-    document.getElementById("totalCount")
-        .textContent = feedbacks.length;
-
-
-    document.getElementById("noTimeCount")
-        .textContent =
-            feedbacks.filter(
-                feedback =>
-                    feedback.reason === "Keine Zeit"
-            ).length;
+    const participants =
+        feedbacks.filter(
+            feedback =>
+                feedback.participation ===
+                "Teilgenommen"
+        );
 
 
-    document.getElementById("tooHardCount")
-        .textContent =
-            feedbacks.filter(
-                feedback =>
-                    feedback.reason === "Zu schwer"
-            ).length;
+    const nonParticipants =
+        feedbacks.filter(
+            feedback =>
+                feedback.participation ===
+                "Nicht teilgenommen"
+        );
 
 
-    document.getElementById("noDesireCount")
-        .textContent =
-            feedbacks.filter(
-                feedback =>
-                    feedback.reason === "Keine Lust"
-            ).length;
+    document.getElementById(
+        "totalCount"
+    ).textContent =
+        feedbacks.length;
 
 
-    document.getElementById("otherCount")
-        .textContent =
-            feedbacks.filter(
-                feedback =>
-                    feedback.reason === "Sonstige"
-            ).length;
+    document.getElementById(
+        "participantCount"
+    ).textContent =
+        participants.length;
+
+
+    document.getElementById(
+        "nonParticipantCount"
+    ).textContent =
+        nonParticipants.length;
+
+
+    document.getElementById(
+        "noTimeCount"
+    ).textContent =
+        nonParticipants.filter(
+            feedback =>
+                feedback.reason ===
+                "Keine Zeit"
+        ).length;
+
+
+    document.getElementById(
+        "tooHardCount"
+    ).textContent =
+        nonParticipants.filter(
+            feedback =>
+                feedback.reason ===
+                "Zu schwer"
+        ).length;
+
+
+    document.getElementById(
+        "noDesireCount"
+    ).textContent =
+        nonParticipants.filter(
+            feedback =>
+                feedback.reason ===
+                "Keine Lust"
+        ).length;
+
+
+    document.getElementById(
+        "otherCount"
+    ).textContent =
+        nonParticipants.filter(
+            feedback =>
+                feedback.reason ===
+                "Sonstige"
+        ).length;
 
 }
 
@@ -242,7 +290,9 @@ function displayStatistics(feedbacks) {
 // FEEDBACKS ANZEIGEN
 // ==========================================
 
-function displayFeedbacks(feedbacks) {
+function displayFeedbacks(
+    feedbacks
+) {
 
     if (feedbacks.length === 0) {
 
@@ -250,6 +300,7 @@ function displayFeedbacks(feedbacks) {
             "<p>Noch keine Feedbacks vorhanden.</p>";
 
         return;
+
     }
 
 
@@ -261,6 +312,7 @@ function displayFeedbacks(feedbacks) {
 
             const element =
                 document.createElement("div");
+
 
             element.className =
                 "feedback";
@@ -279,37 +331,295 @@ function displayFeedbacks(feedbacks) {
                 );
 
 
-            element.innerHTML = `
+            // ==================================
+            // NICHT TEILGENOMMEN
+            // ==================================
 
-                <div class="feedback-top">
+            if (
+                feedback.participation ===
+                "Nicht teilgenommen"
+            ) {
 
-                    <span class="feedback-name">
-                        ${escapeHtml(name)}
-                    </span>
+                element.innerHTML = `
 
-                    <span class="feedback-date">
-                        ${escapeHtml(date)}
-                    </span>
+                    <div class="feedback-top">
 
-                </div>
+                        <span class="feedback-name">
+                            ${escapeHtml(name)}
+                        </span>
 
-                <div class="feedback-reason">
-                    Grund: ${escapeHtml(feedback.reason)}
-                </div>
+                        <span class="feedback-date">
+                            ${escapeHtml(date)}
+                        </span>
 
-                ${
-                    feedback.additional_text
-                        ? `
-                            <div class="feedback-text">
+                    </div>
+
+
+                    <div class="feedback-type not-participated">
+                        Nicht teilgenommen
+                    </div>
+
+
+                    <div class="feedback-reason">
+                        Grund:
+                        ${escapeHtml(
+                            feedback.reason ||
+                            "Keine Angabe"
+                        )}
+                    </div>
+
+
+                    ${
+                        feedback.additional_text
+                            ? `
+                                <div class="feedback-text">
+
+                                    <strong>
+                                        Weitere Angaben:
+                                    </strong>
+
+                                    <br>
+
+                                    ${escapeHtml(
+                                        feedback.additional_text
+                                    )}
+
+                                </div>
+                              `
+                            : ""
+                    }
+
+                `;
+
+            }
+
+
+            // ==================================
+            // TEILGENOMMEN
+            // ==================================
+
+            else if (
+                feedback.participation ===
+                "Teilgenommen"
+            ) {
+
+                element.innerHTML = `
+
+                    <div class="feedback-top">
+
+                        <span class="feedback-name">
+                            ${escapeHtml(name)}
+                        </span>
+
+                        <span class="feedback-date">
+                            ${escapeHtml(date)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="feedback-type participated">
+                        Teilgenommen
+                    </div>
+
+
+                    <div class="participant-answers">
+
+
+                        <div class="answer">
+
+                            <strong>
+                                Gesamteindruck:
+                            </strong>
+
+                            <span>
                                 ${escapeHtml(
-                                    feedback.additional_text
+                                    feedback.overall_rating ||
+                                    "Keine Angabe"
                                 )}
-                            </div>
-                          `
-                        : ""
-                }
+                            </span>
 
-            `;
+                        </div>
+
+
+                        <div class="answer">
+
+                            <strong>
+                                Schwierigkeitsgrad:
+                            </strong>
+
+                            <span>
+                                ${escapeHtml(
+                                    feedback.difficulty ||
+                                    "Keine Angabe"
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="answer">
+
+                            <strong>
+                                Länge:
+                            </strong>
+
+                            <span>
+                                ${escapeHtml(
+                                    feedback.length_rating ||
+                                    "Keine Angabe"
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="answer">
+
+                            <strong>
+                                Verständlichkeit:
+                            </strong>
+
+                            <span>
+                                ${escapeHtml(
+                                    feedback.clue_clarity ||
+                                    "Keine Angabe"
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="answer">
+
+                            <strong>
+                                Abwechslung:
+                            </strong>
+
+                            <span>
+                                ${escapeHtml(
+                                    feedback.variety_rating ||
+                                    "Keine Angabe"
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="answer">
+
+                            <strong>
+                                Spaß:
+                            </strong>
+
+                            <span>
+                                ${escapeHtml(
+                                    feedback.fun_rating ||
+                                    "Keine Angabe"
+                                )}
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    ${
+                        feedback.positive_feedback
+                            ? `
+                                <div class="feedback-text">
+
+                                    <strong>
+                                        Was hat gefallen?
+                                    </strong>
+
+                                    <br>
+
+                                    ${escapeHtml(
+                                        feedback.positive_feedback
+                                    )}
+
+                                </div>
+                              `
+                            : ""
+                    }
+
+
+                    ${
+                        feedback.improvement_feedback
+                            ? `
+                                <div class="feedback-text">
+
+                                    <strong>
+                                        Verbesserungsvorschläge:
+                                    </strong>
+
+                                    <br>
+
+                                    ${escapeHtml(
+                                        feedback.improvement_feedback
+                                    )}
+
+                                </div>
+                              `
+                            : ""
+                    }
+
+
+                    ${
+                        feedback.additional_feedback
+                            ? `
+                                <div class="feedback-text">
+
+                                    <strong>
+                                        Weitere Anmerkungen:
+                                    </strong>
+
+                                    <br>
+
+                                    ${escapeHtml(
+                                        feedback.additional_feedback
+                                    )}
+
+                                </div>
+                              `
+                            : ""
+                    }
+
+                `;
+
+            }
+
+
+            // ==================================
+            // UNBEKANNTER / ALTER DATENSATZ
+            // ==================================
+
+            else {
+
+                element.innerHTML = `
+
+                    <div class="feedback-top">
+
+                        <span class="feedback-name">
+                            ${escapeHtml(name)}
+                        </span>
+
+                        <span class="feedback-date">
+                            ${escapeHtml(date)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="feedback-type">
+                        Teilnahme nicht angegeben
+                    </div>
+
+                `;
+
+            }
 
 
             feedbackList.appendChild(
@@ -326,13 +636,15 @@ function displayFeedbacks(feedbacks) {
 // HTML ESCAPEN
 // ==========================================
 
-function escapeHtml(value) {
+function escapeHtml(
+    value
+) {
 
     const div =
         document.createElement("div");
 
     div.textContent =
-        value;
+        value ?? "";
 
     return div.innerHTML;
 
@@ -372,76 +684,110 @@ refreshButton.addEventListener(
     loadFeedback
 );
 
+
 // ==========================================
 // ALLE FEEDBACKS LÖSCHEN
 // ==========================================
 
-const deleteAllButton = document.getElementById("deleteAllButton");
+const deleteAllButton =
+    document.getElementById(
+        "deleteAllButton"
+    );
+
 
 if (deleteAllButton) {
 
-    deleteAllButton.addEventListener("click", async function () {
+    deleteAllButton.addEventListener(
+        "click",
+        async function () {
 
-        const confirmed = confirm(
-            "Möchtest du wirklich ALLE Feedbacks löschen?\n\n" +
-            "Diese Aktion kann nicht rückgängig gemacht werden."
-        );
-
-        if (!confirmed) {
-            return;
-        }
-
-        deleteAllButton.disabled = true;
-        deleteAllButton.textContent = "Lösche...";
-
-        try {
-
-            const response = await fetch(
-                `${SUPABASE_URL}/rest/v1/feedback?id=not.is.null`,
-                {
-                    method: "DELETE",
-
-                    headers: {
-                        "apikey": SUPABASE_KEY,
-                        "Authorization": `Bearer ${accessToken}`,
-                        "Prefer": "return=minimal"
-                    }
-                }
-            );
-
-            if (!response.ok) {
-
-                const errorText = await response.text();
-
-                console.error(
-                    "Fehler beim Löschen:",
-                    errorText
+            const confirmed =
+                confirm(
+                    "Möchtest du wirklich ALLE Feedbacks löschen?\n\n" +
+                    "Diese Aktion kann nicht rückgängig gemacht werden."
                 );
 
-                throw new Error(
-                    "Feedbacks konnten nicht gelöscht werden."
-                );
+
+            if (!confirmed) {
+
+                return;
+
             }
 
-            alert("Alle Feedbacks wurden gelöscht.");
 
-            await loadFeedback();
+            deleteAllButton.disabled =
+                true;
 
-        } catch (error) {
+            deleteAllButton.textContent =
+                "Lösche...";
 
-            console.error(error);
 
-            alert(
-                "Fehler beim Löschen der Feedbacks."
-            );
+            try {
 
-        } finally {
+                const response =
+                    await fetch(
+                        `${SUPABASE_URL}/rest/v1/feedback?id=not.is.null`,
+                        {
+                            method: "DELETE",
 
-            deleteAllButton.disabled = false;
-            deleteAllButton.textContent = "Alle löschen";
+                            headers: {
+                                "apikey":
+                                    SUPABASE_KEY,
+
+                                "Authorization":
+                                    `Bearer ${accessToken}`,
+
+                                "Prefer":
+                                    "return=minimal"
+                            }
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    const errorText =
+                        await response.text();
+
+                    console.error(
+                        "Fehler beim Löschen:",
+                        errorText
+                    );
+
+                    throw new Error(
+                        "Feedbacks konnten nicht gelöscht werden."
+                    );
+
+                }
+
+
+                alert(
+                    "Alle Feedbacks wurden gelöscht."
+                );
+
+
+                await loadFeedback();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Fehler beim Löschen der Feedbacks."
+                );
+
+            } finally {
+
+                deleteAllButton.disabled =
+                    false;
+
+                deleteAllButton.textContent =
+                    "Alle löschen";
+
+            }
 
         }
-
-    });
+    );
 
 }

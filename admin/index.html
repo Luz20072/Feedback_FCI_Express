@@ -2,24 +2,46 @@
 <html lang="de">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>FCI Express – Admin</title>
 
-    <link rel="stylesheet" href="admin.css">
+    <link
+        rel="stylesheet"
+        href="admin.css"
+    >
+
 </head>
+
 
 <body>
 
     <main class="container">
 
+
+        <!-- ================================= -->
         <!-- LOGIN -->
+        <!-- ================================= -->
 
-        <section id="loginSection" class="card">
+        <section
+            id="loginSection"
+            class="card"
+        >
 
-            <h1>FCI Express</h1>
-            <h2>Admin-Bereich</h2>
+            <h1>
+                FCI Express
+            </h1>
+
+            <h2>
+                Admin-Bereich
+            </h2>
+
 
             <form id="loginForm">
 
@@ -37,6 +59,7 @@
 
                 </div>
 
+
                 <div class="form-group">
 
                     <label for="password">
@@ -51,9 +74,11 @@
 
                 </div>
 
+
                 <button type="submit">
                     Anmelden
                 </button>
+
 
                 <p id="loginStatus"></p>
 
@@ -62,22 +87,32 @@
         </section>
 
 
+        <!-- ================================= -->
         <!-- ADMIN -->
+        <!-- ================================= -->
 
         <section
             id="adminSection"
             class="hidden"
         >
 
+
+            <!-- HEADER -->
+
             <div class="header">
 
                 <div>
-                    <h1>Feedback-Auswertung</h1>
+
+                    <h1>
+                        Feedback-Auswertung
+                    </h1>
 
                     <p>
                         FCI Express
                     </p>
+
                 </div>
+
 
                 <button
                     id="logoutButton"
@@ -89,13 +124,19 @@
             </div>
 
 
+            <!-- ================================= -->
             <!-- STATISTIK -->
+            <!-- ================================= -->
 
             <div class="statistics">
 
+
                 <div class="stat-card">
 
-                    <span class="stat-number" id="totalCount">
+                    <span
+                        class="stat-number"
+                        id="totalCount"
+                    >
                         0
                     </span>
 
@@ -108,12 +149,15 @@
 
                 <div class="stat-card">
 
-                    <span class="stat-number" id="noTimeCount">
+                    <span
+                        class="stat-number"
+                        id="participantCount"
+                    >
                         0
                     </span>
 
                     <span class="stat-label">
-                        Ich hatte keine Zeit
+                        Teilgenommen
                     </span>
 
                 </div>
@@ -121,12 +165,15 @@
 
                 <div class="stat-card">
 
-                    <span class="stat-number" id="tooHardCount">
+                    <span
+                        class="stat-number"
+                        id="nonParticipantCount"
+                    >
                         0
                     </span>
 
                     <span class="stat-label">
-                        Es war zu schwer
+                        Nicht teilgenommen
                     </span>
 
                 </div>
@@ -134,12 +181,15 @@
 
                 <div class="stat-card">
 
-                    <span class="stat-number" id="noDesireCount">
+                    <span
+                        class="stat-number"
+                        id="noTimeCount"
+                    >
                         0
                     </span>
 
                     <span class="stat-label">
-                        Ich hatte keine Lust
+                        Keine Zeit
                     </span>
 
                 </div>
@@ -147,7 +197,42 @@
 
                 <div class="stat-card">
 
-                    <span class="stat-number" id="otherCount">
+                    <span
+                        class="stat-number"
+                        id="tooHardCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        Zu schwer
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-number"
+                        id="noDesireCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        Keine Lust
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-number"
+                        id="otherCount"
+                    >
                         0
                     </span>
 
@@ -160,10 +245,16 @@
             </div>
 
 
+            <!-- ================================= -->
             <!-- FEEDBACKS -->
-             <div class="feedback-header">
+            <!-- ================================= -->
 
-                <h2>Feedbacks</h2>
+            <div class="feedback-header">
+
+                <h2>
+                    Feedbacks
+                </h2>
+
 
                 <div class="feedback-actions">
 
@@ -173,6 +264,7 @@
                     >
                         Aktualisieren
                     </button>
+
 
                     <button
                         type="button"
@@ -186,15 +278,15 @@
 
             </div>
 
-                <div id="feedbackList">
 
-                    <p>
-                        Lade Feedbacks...
-                    </p>
+            <div id="feedbackList">
 
-                </div>
+                <p>
+                    Lade Feedbacks...
+                </p>
 
             </div>
+
 
         </section>
 
